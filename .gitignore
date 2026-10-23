@@ -1,0 +1,21 @@
+# Rust build artifacts
+target/
+Cargo.lock
+**/*.rs.bk
+*.db
+*.db-shm
+*.db-wal
+
+# Android build artifacts
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.DS_Store

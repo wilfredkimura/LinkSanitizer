@@ -1,0 +1,35 @@
+[package]
+name = "link_sanitizer"
+version = "0.1.0"
+edition = "2021"
+description = "Rivium + Apalis Link Sanitizer pocket backend for Android"
+
+[lib]
+name = "link_sanitizer"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "link_sanitizer_cli"
+path = "src/main.rs"
+
+[dependencies]
+# Rivium lifecycle & host
+rivium-host = "0.2"
+
+# Apalis background task processing with SQLite persistence
+apalis = "1"
+apalis-sqlite = "1"
+
+# Async runtime & DB
+tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# URL parsing & logging
+url = "2.5"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Android JNI support (only active when building as cdylib / for android)
+jni = { version = "0.21", default-features = false }
