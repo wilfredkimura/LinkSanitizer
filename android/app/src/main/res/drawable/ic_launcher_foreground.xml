@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Link / Shield Icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,20L28,32v20c0,16.5 11.1,32 26,36c14.9,-4 26,-19.5 26,-36V32L54,20z M50,62l-10,-10l3,-3l7,7l17,-17l3,3L50,62z" />
+</vector>

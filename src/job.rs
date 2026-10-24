@@ -2,7 +2,7 @@ use apalis::prelude::*;
 use serde::{Deserialize, Serialize};
 use tracing::info;
 
-use crate::sanitizer::{sanitize_url, SanitizeResult};
+use crate::sanitizer::{sanitize_text, SanitizeResult};
 
 /// The job payload queued by Android or CLI
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -34,7 +34,7 @@ pub async fn process_sanitize_job(job: SanitizeLinkJob) -> Result<SanitizeResult
     // Simulate work / async latency if needed
     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
 
-    let result = sanitize_url(&job.raw_url).map_err(|e| e)?;
+    let result = sanitize_text(&job.raw_url);
 
     info!(
         "[Apalis Worker] Job {} complete! Sanitized: {} (Removed {} trackers)",

@@ -16,15 +16,17 @@ class ShareActivity : Activity() {
         // Initialize Rust backend if not already done
         RustBridge.init(applicationContext)
 
-        if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
-            val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
+        if (intent?.action == Intent.ACTION_SEND && intent.type?.startsWith("text/") == true) {
+            val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
+                ?: intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString()
+                ?: ""
             Log.d("ShareActivity", "Received shared text: $sharedText")
 
             if (sharedText.isNotBlank()) {
                 // Call Rust logic via JNI
                 val cleanedUrl = RustBridge.sanitizeSync(sharedText)
 
-                // Show notification with the cleaned URL
+                // Show notification with the cleaned URL and copy to clipboard
                 NotificationHelper.showCleanedLinkNotification(
                     context = this,
                     originalUrl = sharedText,
@@ -35,5 +37,6 @@ class ShareActivity : Activity() {
 
         // Close activity immediately so user stays in their previous app seamlessly
         finish()
+        overridePendingTransition(0, 0)
     }
 }

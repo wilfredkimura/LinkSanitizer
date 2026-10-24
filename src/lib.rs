@@ -54,7 +54,7 @@ pub mod android_jni {
     }
 
     #[no_mangle]
-    pub extern "system" fn Java_com_example_linksanitizer_RustBridge_sanitizeSync(
+    pub extern "system" fn Java_com_example_linksanitizer_RustBridge_sanitizeNative(
         mut env: JNIEnv,
         _class: JClass,
         raw_url: JString,
@@ -64,11 +64,18 @@ pub mod android_jni {
             Err(_) => return env.new_string("").unwrap().into_raw(),
         };
 
-        let cleaned = match sanitizer::sanitize_url(&input) {
-            Ok(res) => res.sanitized_url,
-            Err(_) => input,
-        };
+        let res = sanitizer::sanitize_text(&input);
+        let cleaned = res.sanitized_url;
 
         env.new_string(cleaned).unwrap().into_raw()
+    }
+
+    #[no_mangle]
+    pub extern "system" fn Java_com_example_linksanitizer_RustBridge_sanitizeSync(
+        env: JNIEnv,
+        class: JClass,
+        raw_url: JString,
+    ) -> jstring {
+        Java_com_example_linksanitizer_RustBridge_sanitizeNative(env, class, raw_url)
     }
 }

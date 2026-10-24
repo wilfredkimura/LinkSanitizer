@@ -10,6 +10,9 @@ Cargo.lock
 .gradle/
 build/
 app/build/
+android/app/build/
+local.properties
+android/local.properties
 *.apk
 *.aab
 

@@ -36,16 +36,43 @@ object NotificationHelper {
         clipboard.setPrimaryClip(clip)
         Toast.makeText(context, "Cleaned link copied to clipboard!", Toast.LENGTH_SHORT).show()
 
+        // Tap notification to open MainActivity
+        val openAppIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("last_cleaned_url", cleanedUrl)
+        }
+        val contentPendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            openAppIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Action: Share Cleaned Link
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, cleanedUrl)
+        }
+        val shareChooser = Intent.createChooser(shareIntent, "Share Cleaned Link")
+        val sharePendingIntent = PendingIntent.getActivity(
+            context,
+            1,
+            shareChooser,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         // Notification builder
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_menu_share)
             .setContentTitle("Link Sanitized & Copied!")
             .setContentText(cleanedUrl)
             .setStyle(NotificationCompat.BigTextStyle().bigText("Cleaned:\n$cleanedUrl\n\nOriginal:\n$originalUrl"))
+            .setContentIntent(contentPendingIntent)
+            .addAction(android.R.drawable.ic_menu_share, "Share", sharePendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .build()
 
-        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+        notificationManager.notify((System.currentTimeMillis() % 100000).toInt(), notification)
     }
 }

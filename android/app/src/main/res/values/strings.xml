@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LinkSanitizer</string>
+    <string name="title_dashboard">LinkSanitizer</string>
+    <string name="subtitle_dashboard">Rivium + Apalis Link Cleaner</string>
+    <string name="hint_input_url">Paste tracking URL here or share directly...</string>
+    <string name="btn_sanitize">Sanitize URL with Rust</string>
+    <string name="channel_name">Cleaned Links</string>
+    <string name="channel_desc">Notifications for sanitized URLs</string>
+</resources>
